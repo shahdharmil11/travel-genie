@@ -1,0 +1,14 @@
+streamlit
+numpy
+plotly
+folium
+matplotlib
+pandas
+streamlit-folium
+langchain
+langchain-community
+langchain-neo4j
+langchain-openai
+neo4j
+langgraph
+ipython

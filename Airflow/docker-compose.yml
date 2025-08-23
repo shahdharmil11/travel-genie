@@ -1,0 +1,47 @@
+version: '3'
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  env_file:
+    - airflow.env
+  # entrypoint: ['/opt/airflow/script/entrypoint.sh']
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./script/entrypoint.sh:/opt/airflow/script/entrypoint.sh
+    - ./requirements.txt:/opt/airflow/requirements.txt
+  depends_on:
+    - postgres
+  networks:
+    - confluent
+
+services:
+  webserver:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && airflow webserver"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - scheduler
+
+  scheduler:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname admin --lastname admin --role Admin --email admin@example.com --password admin && airflow scheduler"
+  
+  postgres:
+    image: postgres:14.0
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    networks:
+      - confluent
+      
+networks:
+  confluent:
