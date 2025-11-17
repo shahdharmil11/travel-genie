@@ -4,7 +4,7 @@
 TravelGenie is a travel recommendation system that leverages data scraping, processing, and AI-based recommendations to provide personalized travel suggestions. The system integrates multiple technologies, including Apache Airflow, Snowflake, Neo4j, Pinecone, and OpenAI, to efficiently process and analyze travel-related data.
 
 ## Architecture
-The system follows an **ELT (Extract, Load, Transform)** approach and consists of the following components:
+The system follows an **ELT (Extract, Load, Transform)** approach using Snowflake and consists of the following components:
 
 1. **Data Scraping**  
    - Uses **APIFY + Selenium** to scrape travel-related data from APIs and websites.
